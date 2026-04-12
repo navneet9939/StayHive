@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Environment files (NEVER commit secrets)
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+tmpclaude-*-cwd
+nul
+
+# Misc accidental files
+*.ini
+"RATE_LIMIT_WINDOW_MS=900000 # Change win.txt"

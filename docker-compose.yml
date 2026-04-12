@@ -1,0 +1,83 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./server
+      target: builder
+    container_name: stayhive-backend
+    env_file: ./server/.env
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/stayhive
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - "3001:3001"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./server/src:/app/src
+    command: npm run dev
+    networks:
+      - stayhive-network
+
+  frontend:
+    build:
+      context: ./client
+    container_name: stayhive-frontend
+    env_file: ./client/.env.local
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./client/src:/app/src
+    networks:
+      - stayhive-network
+
+  mongo:
+    image: mongo:7
+    container_name: stayhive-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: stayhive
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - stayhive-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: stayhive-redis
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --save 60 1
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - stayhive-network
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  stayhive-network:
+    driver: bridge
