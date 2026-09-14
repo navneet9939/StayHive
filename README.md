@@ -97,31 +97,6 @@ cd stayHive
 cp server/.env.example server/.env
 ```
 
-Edit `server/.env`:
-```env
-NODE_ENV=development
-PORT=5000
-MONGODB_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/stayhive
-REDIS_URL=redis://localhost:6379
-
-JWT_ACCESS_SECRET=<32+ char random string>
-JWT_REFRESH_SECRET=<32+ char random string>
-JWT_ACCESS_EXPIRY=15m
-JWT_REFRESH_EXPIRY=7d
-
-CLOUDINARY_CLOUD_NAME=<your cloud name>
-CLOUDINARY_API_KEY=<your api key>
-CLOUDINARY_API_SECRET=<your api secret>
-
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=you@gmail.com
-SMTP_PASS=<app password>
-SMTP_FROM_NAME=StayHive
-SMTP_FROM_EMAIL=noreply@stayhive.com
-
-CLIENT_URL=http://localhost:3000
-```
 
 **Frontend** (`client/.env.local`):
 ```bash
